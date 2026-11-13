@@ -1,0 +1,4 @@
+mojoloader
+mojoloader-ui.jar
+build/
+*.class
