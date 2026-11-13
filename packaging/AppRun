@@ -1,0 +1,10 @@
+#!/bin/sh
+# AppImage entry point. "--cli ARGS" runs the command-line loader instead of the UI.
+HERE="$(dirname "$(readlink -f "$0")")"
+unset LD_LIBRARY_PATH
+if [ "$1" = "--cli" ]; then
+    shift
+    exec "$HERE/usr/bin/mojoloader" "$@"
+fi
+exec "$HERE/usr/lib/jre/bin/java" -Dmojoloader.path="$HERE/usr/bin/mojoloader" \
+    -jar "$HERE/usr/share/mojoloader/mojoloader-ui.jar" "$@"

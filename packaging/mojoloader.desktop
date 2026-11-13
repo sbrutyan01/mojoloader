@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Mojo Loader
+Comment=Load bitstreams onto the Mojo v3 FPGA board
+Exec=mojoloader-ui
+Icon=mojoloader
+Terminal=false
+Categories=Development;Electronics;

@@ -59,6 +59,9 @@ public final class MojoLoaderUI extends JFrame {
     private static final String DEFAULT_PORT = "/dev/ttyACM0";
     private static final Pattern PROGRESS = Pattern.compile("^(Writing|Verifying):\\s*(\\d+)%$");
 
+    /** Set by the packaged launchers (-Dmojoloader.path=...) to pin the bundled loader. */
+    private static final String FORCED_LOADER = System.getProperty("mojoloader.path");
+
     private static final String PREF_PORT = "port";
     private static final String PREF_FILE = "binFile";
     private static final String PREF_LOADER = "loader";
@@ -194,7 +197,7 @@ public final class MojoLoaderUI extends JFrame {
     private void restoreSettings() {
         refreshPorts(prefs.get(PREF_PORT, null));
         fileField.setText(prefs.get(PREF_FILE, ""));
-        loaderField.setText(prefs.get(PREF_LOADER, findLoader()));
+        loaderField.setText(initialLoader());
         switch (prefs.get(PREF_MODE, "flash")) {
             case "verify" -> verifyButton.setSelected(true);
             case "ram" -> ramButton.setSelected(true);
@@ -205,7 +208,9 @@ public final class MojoLoaderUI extends JFrame {
     private void saveSettings() {
         prefs.put(PREF_PORT, currentPort());
         prefs.put(PREF_FILE, fileField.getText().trim());
-        prefs.put(PREF_LOADER, loaderField.getText().trim());
+        if (FORCED_LOADER == null) {
+            prefs.put(PREF_LOADER, loaderField.getText().trim());
+        }
         prefs.put(PREF_MODE, verifyButton.isSelected() ? "verify" : ramButton.isSelected() ? "ram" : "flash");
     }
 
@@ -237,6 +242,18 @@ public final class MojoLoaderUI extends JFrame {
         } else {
             portBox.setSelectedItem(DEFAULT_PORT);
         }
+    }
+
+    /** Bundled loader if a launcher pinned one, else the saved path if it still works, else a search. */
+    private String initialLoader() {
+        if (FORCED_LOADER != null && !FORCED_LOADER.isBlank()) {
+            return FORCED_LOADER;
+        }
+        String saved = prefs.get(PREF_LOADER, "");
+        if (!saved.isBlank() && (!saved.contains("/") || Files.isExecutable(Path.of(saved)))) {
+            return saved;
+        }
+        return findLoader();
     }
 
     /** Looks for the mojoloader binary next to this program, then in the current directory. */

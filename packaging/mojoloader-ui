@@ -1,0 +1,5 @@
+#!/bin/sh
+# Launcher for the Mojo Loader Swing UI (installed by the .deb).
+# LD_LIBRARY_PATH is cleared so a sourced Xilinx ISE environment cannot break the JVM.
+unset LD_LIBRARY_PATH
+exec java -Dmojoloader.path=/usr/bin/mojoloader -jar /usr/share/mojoloader/mojoloader-ui.jar "$@"

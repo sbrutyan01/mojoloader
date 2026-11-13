@@ -9,6 +9,17 @@ Targets Ubuntu 22.04 and 24.04; it uses only POSIX/glibc calls and has no depend
 
 > Status: tested against a simulated board on a pseudo-terminal, not yet on real hardware.
 
+## Install
+
+Ready-made packages are on the [Releases](https://github.com/sbrutyan01/mojoloader/releases) page:
+
+- **`mojoloader_VERSION_amd64.deb`** (Ubuntu 22.04 / 24.04, Debian 12+): installs `mojoloader`,
+  `mojoloader-ui` and a menu entry. `sudo apt install ./mojoloader_*.deb`
+- **`MojoLoader-VERSION-x86_64.AppImage`**: self-contained, bundles its own Java runtime.
+  `chmod +x MojoLoader-*.AppImage && ./MojoLoader-*.AppImage`
+  (`--cli ARGS` runs the command-line loader instead of the UI).
+- **`mojoloader-ui-VERSION.jar`**: the UI only; needs Java 17+ and the `mojoloader` binary.
+
 ## Build
 
 ```
@@ -18,6 +29,11 @@ make
 sudo apt install default-jdk         # optional: Swing UI, JDK 17 or later
 make ui
 ```
+
+Packages: `make deb` builds the .deb; `make appimage` builds the AppImage and needs
+[appimagetool](https://github.com/AppImage/appimagetool) (`make appimage APPIMAGETOOL=/path/to/it`).
+Pushing a `v*` tag runs `.github/workflows/release.yml`, which builds everything on
+Ubuntu 22.04 and publishes a release.
 
 ## Command line
 
