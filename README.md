@@ -32,8 +32,8 @@ make ui
 
 Packages: `make deb` builds the .deb; `make appimage` builds the AppImage and needs
 [appimagetool](https://github.com/AppImage/appimagetool) (`make appimage APPIMAGETOOL=/path/to/it`).
-Pushing a `v*` tag runs `.github/workflows/release.yml`, which builds everything on
-Ubuntu 22.04 and publishes a release.
+`.github/workflows/release.yml` builds everything on Ubuntu 22.04 and publishes a release:
+push a `v*` tag, or use Actions -> release -> Run workflow and enter a version.
 
 ## Command line
 
